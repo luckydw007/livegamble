@@ -1,0 +1,29 @@
+<div class="digitalClock">
+    <!-- ***** Digital Timer if Draw is active *******-->
+    <div class="clockContent" *ngIf='active'>
+        <div class="dayTitle">
+            Next <br> Draw In
+        </div>
+        <hr color="black" >
+        <div >
+            <div class="digitalTime"><b>{{ hoursToDday }}</b><span class="timeTitle"> Hours&nbsp; &nbsp; </span></div>
+            <div class="digitalTime"><b>{{ minutesToDday }}</b><span class="timeTitle"> Minutes</span></div>
+            <div class="digitalTime"><b>{{ secondsToDday }}</b><span class="timeTitle"> Seconds</span></div><br>
+        </div>
+    </div>
+    
+    <!-- ********* Message if Draw is inactive ******-->
+     <div class="clockContent" *ngIf='!active'>
+        <div class="noDraw" *ngIf='!inProcess'>
+            <b> Next <br> Draw <br> Will <br> Start <br> Soon </b>
+         </div> 
+         <div class="noDraw" *ngIf='inProcess && !isResult' >
+            <b> Draw <br> is in <br> Process <br> Good <br> Luck ..! </b>
+         </div> 
+         <div class="noDraw" *ngIf='inProcess && isResult' >
+            <b> Lucky <br> Draw <br> Result <br> Number <br> is {{ drawResult }} </b>
+         </div> 
+         <hr color="black" >
+     </div>   
+    
+</div>

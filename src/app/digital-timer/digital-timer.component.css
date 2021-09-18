@@ -1,0 +1,44 @@
+.digitalClock {
+    float: right;
+    background-color: black;
+    height: 20vw;
+    width: 10vw;
+    border: goldenrod;
+    border-style: dotted;
+    border-radius: 30px;
+    padding: 15px;
+}
+
+.dayTitle {
+    color: black;
+    font-size: 2vw;
+    text-align: center;
+}
+
+.digitalTime {
+    color: black;
+    font-size: 3.5vw;
+    text-align: center;
+}
+
+.clockContent{
+    background-color: goldenrod;
+    border-radius: 30px;
+    margin: -12px;
+    height: auto;
+    max-width: 10vw;
+    max-height: 20vw;
+    min-height: 20vw;
+    min-width: 10vw;
+    padding: 12.5px;
+}
+
+.timeTitle {
+    font-size: 1vw;
+}
+
+.noDraw {
+    color: black;
+    font-size: 3vw;
+    text-align: center;
+}

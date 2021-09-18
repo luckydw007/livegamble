@@ -1,0 +1,13 @@
+.customWheel{
+    background-image: url(/assets/pic1.jpg); 
+    border-style: dashed; 
+    border-color: orange; 
+    border-radius: 50%; 
+    width: 440px; 
+    height: 440px; 
+    margin: auto; 
+    overflow: auto; 
+    text-align: center; 
+}
+
+  

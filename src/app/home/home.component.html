@@ -1,0 +1,32 @@
+<!-- *** Digital Clock *** -->
+<app-digital-clock></app-digital-clock>
+
+<!-- *** Timer *** -->
+<app-digital-timer [drawDate]='drawDate' [active]='active'></app-digital-timer>
+
+<!-- *** Spinner *** -->
+<div class="customWheel" >
+    <ngx-wheel 
+    #wheel
+    [width]='width'
+    [height]='height'
+    [spinDuration]='20'
+    [disableSpinOnClick]='true'
+    [items]='items'
+    [innerRadius]='50'
+    [spinAmount]='15'
+    [textOrientation]='textOrientation'
+    [textAlignment]='textAlignment'
+    pointerStrokeColor='black'
+    pointerFillColor='white'
+    [idToLandOn]='idToLandOn'
+    (onSpinStart)='before()'
+    (onSpinComplete)='after()'
+    >
+    </ngx-wheel>
+</div>
+
+<!-- *** Result Tables *** -->
+<app-result-table [drawTimeArr]='drawTimeArr1' [drawResultArr]='drawResultArr1' style="float: left; width: 35%; margin-top: -3%;"></app-result-table>
+<app-result-table [drawTimeArr]='drawTimeArr2' [drawResultArr]='drawResultArr2' style="float: right; width: 35%; margin-top: -3%;"></app-result-table>
+

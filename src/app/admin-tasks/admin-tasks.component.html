@@ -1,0 +1,49 @@
+<!-- ************* form to submit draw Data ****************** -->
+<div class="logout">
+    <button type="button" (click)="onLogout()">Logout</button>
+</div>
+<div class="draw-table">
+    <form [formGroup]="drawDataForm" (ngSubmit)="onSubmit()">
+        <table>
+
+            <tr>
+                <th> <label for="draw-result">Draw Result: </label></th>
+                <td><select id="draw-result" formControlName="drawResult">
+                    <option *ngFor="let value of values" [ngValue]="value">
+                    {{ value }}
+                    </option>
+                </select></td>
+            </tr>
+
+            <tr>
+                <th><label for="draw-time">Draw time: </label></th>
+                <td><select id="draw-time" formControlName="drawHour">
+                    <option *ngFor="let hour of hours" [ngValue]="hour">
+                    {{ hour }}
+                    </option>
+                </select>Hr
+                <select id="draw-time" formControlName="drawMinutes">
+                    <option *ngFor="let minute of minutes" [ngValue]="minute">
+                    {{ minute }}
+                    </option>
+                </select>Min
+                <select id="draw-time" formControlName="drawAmPm">
+                    <option [ngValue]='"AM"'>AM</option>
+                    <option [ngValue]='"PM"'>PM</option>
+                </select>
+            </td>
+            </tr>
+
+            <tr>
+                <th><label for="draw-active">Draw is active?: </label></th>
+                <td><input id="draw-active" type="radio" formControlName="drawActive" value="true" > Yes
+                    <input id="draw-active" type="radio" formControlName="drawActive" value="false"> No</td>
+            </tr>
+
+            <tr>
+                <th class="submit" colspan="2"><button type="submit" [disabled]="!drawDataForm.valid">Submit</button></th>
+            </tr>
+
+        </table>
+    </form>
+</div>

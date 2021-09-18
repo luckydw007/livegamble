@@ -1,0 +1,15 @@
+.result-table {
+    width: 100%;
+    color: black;
+    background-color: goldenrod;
+    border-color:white;
+    border-style: dotted;
+    border-collapse: collapse;
+}
+
+tr, th, td {
+    width: 6.84vw;
+    height: 3.17vh;
+    border: 1px dotted black;
+    border-collapse: collapse;
+  }

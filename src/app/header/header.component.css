@@ -1,0 +1,23 @@
+.header {
+    text-align: center; 
+    background-color: black; 
+    background-image: url(/assets/banner1.jpg); 
+    background-repeat: no-repeat; 
+    background-size: contain;
+}
+
+.header-name {
+    font-size: 5vw; 
+    color:orange; 
+    text-align: center;
+}
+
+.header-tagline {
+    font-size: 1.8vw; 
+    color:orange; 
+    text-align: center;
+}
+
+hr {
+    color: orange;
+}
