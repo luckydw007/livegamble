@@ -1,13 +1,15 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgxWheelComponent, TextAlignment, TextOrientation } from 'ngx-wheel';
 import { HomeService } from './home.service';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(NgxWheelComponent, { static: false }) wheel!: NgxWheelComponent;
 
@@ -18,6 +20,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   textAlignment: TextAlignment = TextAlignment.OUTER;
   width = 400;
   height = 400;
+  iRadius = 50;
 
   drawDate = new Date();
   active = true;
@@ -27,16 +30,22 @@ export class HomeComponent implements OnInit, AfterViewInit {
   drawResultArr1: number[] = [];
   drawResultArr2: number[] = [];
 
-  private drawStartTime = "10:00 AM";
-  private drawEndTime = "12:00 AM";
-  private Frequency = 15;
+  
+  private subscription1: Subscription = new Subscription;
+  private subscription2: Subscription = new Subscription;
+  private subscription3: Subscription = new Subscription;
+  private subscription4: Subscription = new Subscription;
+  private subscription5: Subscription = new Subscription;
 
   result: any;
-  constructor(private homeService: HomeService){}
+  constructor(private homeService: HomeService, public breakpointObserver: BreakpointObserver){}
 
   ngOnInit(){
-    this._getDrawTime();
+    this._getDrawTime(this.homeService.currentTime);
     this._updateResults();
+    setTimeout(() => {
+      this._updateResults();
+    }, 30000 );
     this.items = this.seed.map((value) => ({
       fillStyle: 'goldenrod',
       text: ` ${value} `,
@@ -44,28 +53,93 @@ export class HomeComponent implements OnInit, AfterViewInit {
       textFillStyle: 'black',
       textFontSize: '50',
     }))
+
+    this.subscription1 = this.breakpointObserver
+      .observe(['(max-width: 700px)'])
+      .subscribe((state: BreakpointState) => {
+        if (state.matches) {
+          this.width = 200;
+          this.height = 200;
+          this.iRadius = 20;
+          this.items = this.seed.map((value) => ({
+            fillStyle: 'goldenrod',
+            text: ` ${value} `,
+            id: value,
+            textFillStyle: 'black',
+            textFontSize: '20',
+          }))
+        } else {
+          this.width = 400;
+          this.height = 400;
+          
+          this.iRadius = 50;
+          this.items = this.seed.map((value) => ({
+            fillStyle: 'goldenrod',
+            text: ` ${value} `,
+            id: value,
+            textFillStyle: 'black',
+            textFontSize: '50',
+          }))
+        }
+      });
   }
 
   // To Run Spinner. Spinner is availble to run after ViewInit Only
   ngAfterViewInit(){
-    const timeLeft = this.drawDate.getTime() - new Date().getTime();
+    const timeLeft = this.drawDate.getTime() - this.homeService.currentTime.getTime();
     this.homeService.getDrawResult();
     if(timeLeft <= 180000 ){
-      this.result = this.homeService.getDrawResult();
+      this.homeService.getDrawResult();
+      this.subscription2 = this.homeService.drawResultNumber.subscribe( res => {
+        this.result = res;
+      });
       setTimeout(() => {
         this._spin();
       }, timeLeft)
     } else {
       setInterval(() => {
-        const timeLeft = this.drawDate.getTime() - new Date().getTime();
+        const timeLeft = this.drawDate.getTime() - this.homeService.currentTime.getTime();
+        
         if(timeLeft <= 150000 ){
-          this.result = this.homeService.getDrawResult();
+          this.homeService.getDrawResult();
+          this.subscription3 = this.homeService.drawResultNumber.subscribe( res => {
+            this.result = res;
+          });
           setTimeout(() => {
             this._spin();
           }, timeLeft)
         }
-      },150000);
+      },60000);
     }
+
+    this.subscription4 = this.breakpointObserver
+      .observe(['(max-width: 700px)'])
+      .subscribe((state: BreakpointState) => {
+        if (state.matches) {
+          this.width = 200;
+          this.height = 200;
+          this.iRadius = 20;
+          this.items = this.seed.map((value) => ({
+            fillStyle: 'goldenrod',
+            text: ` ${value} `,
+            id: value,
+            textFillStyle: 'black',
+            textFontSize: '20',
+          }))
+        } else {
+          this.width = 400;
+          this.height = 400;
+          
+          this.iRadius = 50;
+          this.items = this.seed.map((value) => ({
+            fillStyle: 'goldenrod',
+            text: ` ${value} `,
+            id: value,
+            textFillStyle: 'black',
+            textFontSize: '50',
+          }))
+        }
+      });
     
   }
 
@@ -84,20 +158,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   // Just after the Spin
   after() {
-    this._getDrawTime();
-    this._updateResults();
+    this._getDrawTime(this.homeService.currentTime);
     this.homeService.drawResult.next({isResult: true, result: this.result});
     // To Reset Spin after certain Intervel 
     setTimeout(() =>{
+      
+      this._updateResults();
       this.wheel.reset();
       this.homeService.drawResult.next({isResult: false, result: this.result});
-      this.homeService.drawInProcess.next(false);}, 10000);
+      this.homeService.drawInProcess.next(false);
+    }, 10000);
     
   }
 
   // Update the result Table
   private _updateResults(){
-    const drawHistory = this.homeService.getDrawHistory();
+    this.homeService.getDrawHistory();
+    this.subscription5 = this.homeService.drawHistory1.subscribe(res => {
+      let drawHistory = res;
     let drawHistoryCount = drawHistory.drawTimeHistory.length;
     while( drawHistoryCount > 0) {
       if(drawHistoryCount <= 5){
@@ -109,6 +187,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
       drawHistoryCount--;
     }
+    });
+    
   }
 
   private _getDrawResult() {
@@ -118,10 +198,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // Get Next  Draw Time
-  private _getDrawTime() {
-    let date = new Date();
-    if(date.getHours() < 8 && date.getHours() >= 0 ){
-      date.setHours(8,0,0,0);
+  private _getDrawTime(currentDate: Date) {
+    let date = new Date(currentDate.getTime());
+    if(date.getHours() < 10 && date.getHours() >= 0 ){
+      date.setHours(10,0,0,0);
     }else{
       const min = Math.floor(date.getMinutes() / 15);
       switch(min) {
@@ -146,5 +226,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     date.setSeconds(date.getSeconds()+1,0)
     this.drawDate = date;
     this.homeService.drawdate.next(date);
+  }
+
+  ngOnDestroy(){
+    this.subscription1.unsubscribe();
+    this.subscription2.unsubscribe();
+    this.subscription3.unsubscribe();
+    this.subscription4.unsubscribe();
+    this.subscription5.unsubscribe();
   }
 }

@@ -8,23 +8,23 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 export class ResultTableComponent implements OnInit, OnChanges {
 
   @Input('drawTimeArr')
-  drawTimeArr1: string[]= [];
+  drawTimeArrInput: string[]= [];
   
   @Input('drawResultArr')
-  drawResultArr1: number[] = [];
+  drawResultArrInput: number[] = [];
 
   drawTimeArr: string[] =[];
   drawResultArr: number[] =[];
   constructor() { }
 
   ngOnInit(): void {
-    this.drawTimeArr = this.drawTimeArr1;
-    this.drawResultArr = this.drawResultArr1;
+    this.drawTimeArr = this.drawTimeArrInput;
+    this.drawResultArr = this.drawResultArrInput;
   }
 
   ngOnChanges(): void {
-    this.drawTimeArr = this.drawTimeArr1;
-    this.drawResultArr = this.drawResultArr1;
+    this.drawTimeArr = this.drawTimeArrInput;
+    this.drawResultArr = this.drawResultArrInput;
   }
 
 }

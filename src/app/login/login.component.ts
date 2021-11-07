@@ -26,19 +26,23 @@ export class LoginComponent implements OnInit {
     }
     const email = this.loginForm.controls.username.value;
     const password = this.loginForm.controls.password.value;
-    this.loginservice.login(email, password).subscribe(
-      resData => {
-        if (resData.registered){
-          const user = new User("abc@abc.com", "sampleToken", true);
-          this.loginservice.user.next(user);
-          this.router.navigate(['/admin']);
-        }
-        console.log(resData);
-      },
-      errorMessage => {
-        console.log(errorMessage);
-      }
-    );
+    this.loginservice.login(email, password);
+    // if ( this.loginservice.getToken()) {
+    //         this.router.navigate(['/admin']);
+    // }
+    // .subscribe(
+    //   resData => {
+    //     if (resData.registered){
+    //       const user = new User("abc@abc.com", "sampleToken", true);
+    //       this.loginservice.user.next(user);
+    //       this.router.navigate(['/admin']);
+    //     }
+    //     console.log(resData);
+    //   },
+    //   errorMessage => {
+    //     console.log(errorMessage);
+    //   }
+    // );
 
   }
 

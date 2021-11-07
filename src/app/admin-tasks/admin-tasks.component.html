@@ -41,7 +41,7 @@
             </tr>
 
             <tr>
-                <th class="submit" colspan="2"><button type="submit" [disabled]="!drawDataForm.valid">Submit</button></th>
+                <th class="submit" colspan="2"><button type="submit" [disabled]="!drawDataForm.valid || isSubmitDisable">Submit</button></th>
             </tr>
 
         </table>

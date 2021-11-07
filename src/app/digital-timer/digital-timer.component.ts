@@ -19,6 +19,10 @@ export class DigitalTimerComponent implements OnInit, OnDestroy {
   isResult = false;
   drawResult: any;
   private subscription: Subscription = new Subscription;
+  private drawDateSubscription: Subscription = new Subscription;
+  private drawInProcessSubscription: Subscription = new Subscription;
+  private drawResultSubscription: Subscription = new Subscription;
+
   private milliSecondsInASecond = 1000;
   private hoursInADay = 24;
   private minutesInAnHour = 60;
@@ -33,10 +37,10 @@ export class DigitalTimerComponent implements OnInit, OnDestroy {
   constructor(private homeService: HomeService) { }
 
   ngOnInit() {
-    this.homeService.drawdate.subscribe((res) => {
+    this.drawDateSubscription = this.homeService.drawdate.subscribe((res) => {
       this.drawDate = res;
     });
-    this.homeService.drawInProcess.subscribe((res) => {
+    this.drawInProcessSubscription = this.homeService.drawInProcess.subscribe((res) => {
       this.inProcess = res;
       if (res) {
         this.active = false
@@ -44,7 +48,7 @@ export class DigitalTimerComponent implements OnInit, OnDestroy {
         this._updateTimer();
           this.active = true}
     });
-    this.homeService.drawResult.subscribe((res) => {
+    this.drawResultSubscription = this.homeService.drawResult.subscribe((res) => {
       this.isResult = res.isResult;
       this.drawResult = res.result;
     });
@@ -54,11 +58,14 @@ export class DigitalTimerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.drawDateSubscription.unsubscribe();
+    this.drawInProcessSubscription.unsubscribe();
+    this.drawResultSubscription.unsubscribe();
   }
 
   // to update the timer
   private _updateTimer () {
-    this.timeDifference = this.drawDate.getTime() - new  Date().getTime();
+    this.timeDifference = this.drawDate.getTime() - this.homeService.currentTime.getTime();
     this._setTimeUnits(this.timeDifference);
   }
 

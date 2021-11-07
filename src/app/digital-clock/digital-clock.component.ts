@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HomeService } from '../home/home.service';
 
 @Component({
   selector: 'app-digital-clock',
@@ -15,12 +16,13 @@ export class DigitalClockComponent implements OnInit {
   public second: string = "";
   public ampm: string = "";
   public day: string = "";
-  constructor() { }
+  constructor(private homeService: HomeService) { }
 
   ngOnInit(): void {
+    this._date = this.homeService.currentTime;
     // call updateClockData method every second
     setInterval(() => {
-      this._updateClockData(new Date());
+      this._updateClockData(this.homeService.currentTime);
     }, 1000); 
 
     // to find out the current Day
